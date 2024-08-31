@@ -1,0 +1,107 @@
+foreach oc in LC HF ST PN AK HI {\lbr}
+use HESIN_DIAG, clear
+keep if level == 1
+if "`oc'" == "LC" {\lbr}
+gen OC = 1 if substr(diag,1,3)=="C34"
+{\rbr}
+if "`oc'" == "HF" {\lbr}
+gen OC = 1 if substr(diag,1,3)=="I50"
+{\rbr}
+if "`oc'" == "ST" {\lbr}
+gen OC = 1 if inrange(diag,"I60","I649")
+{\rbr}
+if "`oc'" == "PN" {\lbr}
+gen OC = 1 if substr(diag,1,3)=="J44"
+{\rbr}
+if "`oc'" == "AK" {\lbr}
+gen OC = 1 if substr(diag,1,3)=="N17"
+{\rbr}
+if "`oc'" == "HI" {\lbr}
+gen OC = 1 if inrange(diag,"S00","S099")
+{\rbr}
+keep if OC == 1
+save hesin`oc', replace
+use HESIN, clear
+merge 1:m eid ins_index using hesin`oc'
+gen epist = date(epistart,"DMY")
+gen epien = date(epiend,"DMY")
+format epist epien \%td
+count if epist==.
+count if epist==. \& admidate==""
+replace epist = date(admidate,"DMY") if epist==.
+drop if epist==.
+count if epien==.
+count if epien==. \& disdate==""
+replace epien = date(disdate,"DMY") if epien==.
+replace epien = epist if epien==.
+gen admmode = 1
+replace admmode = 0 if inrange(admisorc,1000,2002) | inrange(admisorc,4000,4001) ///
+ | inrange(admisorc,7000,7003) | (admisorc >= 10000 \& admisorc!=11000)
+gen sepmode = 1
+replace sepmode = 0 if inrange(disdest,1000,2002) | inrange(disdest,4000,4001) ///
+ | inrange(disdest,7000,7003) | (disdest >= 10000 \& disdest!=11000)
+replace sepmode = 2 if disdest==11001
+forval i = 1/5 {\lbr}
+bysort eid (epist epien sepmode) : gen A = 1 if epist == epist[_n-1] \& epien == epien[_n-1]
+bysort eid (epist epien sepmode) : replace A =. if A[_n-1]==1
+bysort eid (epist epien sepmode) : replace OC = 1 if OC[_n+1]==1 \& A[_n+1]==1
+bysort eid (epist epien sepmode) : replace sepmode = sepmode[_n+1] if sepmode[_n+1]!=0 \& A[_n+1]==1
+drop if A == 1
+drop A
+{\rbr}
+forval i = 1/100 {\lbr}
+bysort eid (epist epien sepmode) : gen A = 1 if epist < epien[_n-1] \& epien[_n-1]!=.
+bysort eid (epist epien sepmode) : replace A =. if A[_n-1]==1
+bysort eid (epist epien sepmode) : replace OC = 1 if OC[_n+1]==1 \& A[_n+1]==1
+bysort eid (epist epien sepmode) : replace epist = epist[_n+1] if epist[_n+1] < epist \& A[_n+1]==1
+bysort eid (epist epien sepmode) : replace sepmode = sepmode[_n+1] if sepmode[_n+1]==1 \& epien[_n+1]
+>  > epien \& A[_n+1]==1
+bysort eid (epist epien sepmode) : replace sepmode = sepmode[_n+1] if sepmode[_n+1]==2 \& A[_n+1]==1
+bysort eid (epist epien sepmode) : replace epien = epien[_n+1] if epien[_n+1] > epien \& A[_n+1]==1
+drop if A == 1
+drop A
+{\rbr}
+bysort eid (epist epien sepmode) : gen ptr = 1 if admmode==1 | sepmode[_n-1]==1
+bysort eid (epist epien sepmode) : gen transferdist = epist-epien[_n-1]
+gen tr = 1 if ptr == 1 \& inrange(transferdist,0,1)
+bysort eid (epist epien sepmode) : replace tr = 1 if transferdist==0 \& (OC==1 | OC[_n-1]==1)
+bysort eid (epist epien sepmode) : replace tr =. if tr[_n-1]==1
+bysort eid (epist epien sepmode) : replace OC = 1 if OC[_n+1]==1 \& tr[_n+1]==1
+bysort eid (epist epien sepmode) : replace epien = epien[_n+1] if tr[_n+1]==1
+bysort eid (epist epien sepmode) : drop if tr == 1 \& tr[_n-1]==.
+drop ptr tr transferdist
+bysort eid (epist epien sepmode) : gen A = 1 if epist < epien[_n-1] \& epien[_n-1]!=.
+bysort eid (epist epien sepmode) : replace A =. if A[_n-1]==1
+bysort eid (epist epien sepmode) : replace OC = 1 if OC[_n+1]==1 \& A[_n+1]==1
+bysort eid (epist epien sepmode) : replace epist = epist[_n+1] if epist[_n+1] < epist \& A[_n+1]==1
+bysort eid (epist epien sepmode) : replace sepmode = sepmode[_n+1] if sepmode[_n+1]==1 \& epien[_n+1]
+>  > epien \& A[_n+1]==1
+bysort eid (epist epien sepmode) : replace sepmode = sepmode[_n+1] if sepmode[_n+1]==2 \& A[_n+1]==1
+bysort eid (epist epien sepmode) : replace epien = epien[_n+1] if epien[_n+1] > epien \& A[_n+1]==1
+drop if A == 1
+drop A
+forval i = 1/100 {\lbr}
+bysort eid (epist epien sepmode) : gen ptr = 1 if admmode==1 | sepmode[_n-1]==1
+bysort eid (epist epien sepmode) : gen transferdist = epist-epien[_n-1]
+gen tr = 1 if ptr == 1 \& inrange(transferdist,0,1)
+bysort eid (epist epien sepmode) : replace tr = 1 if transferdist==0 \& (OC==1 | OC[_n-1]==1)
+bysort eid (epist epien sepmode) : replace tr =. if tr[_n-1]==1
+bysort eid (epist epien sepmode) : replace OC = 1 if OC[_n+1]==1 \& tr[_n+1]==1
+bysort eid (epist epien sepmode) : replace epien = epien[_n+1] if tr[_n+1]==1
+bysort eid (epist epien sepmode) : drop if tr == 1 \& tr[_n-1]==.
+drop ptr tr transferdist
+bysort eid (epist epien sepmode) : gen A = 1 if epist < epien[_n-1] \& epien[_n-1]!=.
+bysort eid (epist epien sepmode) : replace A =. if A[_n-1]==1
+bysort eid (epist epien sepmode) : replace OC = 1 if OC[_n+1]==1 \& A[_n+1]==1
+bysort eid (epist epien sepmode) : replace epist = epist[_n+1] if epist[_n+1] < epist \& A[_n+1]==1
+bysort eid (epist epien sepmode) : replace sepmode = sepmode[_n+1] if sepmode[_n+1]==1 \& epien[_n+1]
+>  > epien \& A[_n+1]==1
+bysort eid (epist epien sepmode) : replace sepmode = sepmode[_n+1] if sepmode[_n+1]==2 \& A[_n+1]==1
+bysort eid (epist epien sepmode) : replace epien = epien[_n+1] if epien[_n+1] > epien \& A[_n+1]==1
+drop if A == 1
+drop A
+{\rbr}
+keep if OC == 1
+keep eid epist epien OC
+save All`oc', replace
+{\rbr}

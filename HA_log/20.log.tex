@@ -1,0 +1,11 @@
+use AllMI, clear
+collapse (sum) MI, by(eid)
+rename MI nMI
+save tempcheck, replace
+use HESIN, clear
+merge 1:m eid ins_index using hesinmi
+drop _merge
+collapse (sum) MI, by(eid)
+merge 1:1 eid using tempcheck
+drop _merge
+recode nMI .=0

@@ -1,0 +1,46 @@
+gen tr = 1 if ptr == 1 \& inrange(transferdist,0,1)
+bysort eid (epist epien sepmode) : replace tr = 1 if transferdist==0 \& (MI==1 | MI[_n-1]==1)
+*Only deal with one at a time
+bysort eid (epist epien sepmode) : replace tr =. if tr[_n-1]==1
+*Drop transfers, but keep the information they contain
+bysort eid (epist epien sepmode) : replace MI = 1 if MI[_n+1]==1 \& tr[_n+1]==1
+bysort eid (epist epien sepmode) : replace epien = epien[_n+1] if tr[_n+1]==1
+bysort eid (epist epien sepmode) : drop if tr == 1 \& tr[_n-1]==.
+drop ptr tr transferdist
+*This introduces new nested admissions, so we need to cycle between dropping transfers and nested ad
+> missions
+bysort eid (epist epien sepmode) : gen A = 1 if epist < epien[_n-1] \& epien[_n-1]!=.
+bysort eid (epist epien sepmode) : replace A =. if A[_n-1]==1
+bysort eid (epist epien sepmode) : replace MI = 1 if MI[_n+1]==1 \& A[_n+1]==1
+bysort eid (epist epien sepmode) : replace epist = epist[_n+1] if epist[_n+1] < epist \& A[_n+1]==1
+bysort eid (epist epien sepmode) : replace sepmode = sepmode[_n+1] if sepmode[_n+1]==1 \& epien[_n+1]
+>  > epien \& A[_n+1]==1
+bysort eid (epist epien sepmode) : replace sepmode = sepmode[_n+1] if sepmode[_n+1]==2 \& A[_n+1]==1
+bysort eid (epist epien sepmode) : replace epien = epien[_n+1] if epien[_n+1] > epien \& A[_n+1]==1
+drop if A == 1
+drop A
+forval i = 1/100 {\lbr}
+bysort eid (epist epien sepmode) : gen ptr = 1 if admmode==1 | sepmode[_n-1]==1
+bysort eid (epist epien sepmode) : gen transferdist = epist-epien[_n-1]
+gen tr = 1 if ptr == 1 \& inrange(transferdist,0,1)
+bysort eid (epist epien sepmode) : replace tr = 1 if transferdist==0 \& (MI==1 | MI[_n-1]==1)
+bysort eid (epist epien sepmode) : replace tr =. if tr[_n-1]==1
+bysort eid (epist epien sepmode) : replace MI = 1 if MI[_n+1]==1 \& tr[_n+1]==1
+bysort eid (epist epien sepmode) : replace epien = epien[_n+1] if tr[_n+1]==1
+bysort eid (epist epien sepmode) : drop if tr == 1 \& tr[_n-1]==.
+drop ptr tr transferdist
+bysort eid (epist epien sepmode) : gen A = 1 if epist < epien[_n-1] \& epien[_n-1]!=.
+bysort eid (epist epien sepmode) : replace A =. if A[_n-1]==1
+bysort eid (epist epien sepmode) : replace MI = 1 if MI[_n+1]==1 \& A[_n+1]==1
+bysort eid (epist epien sepmode) : replace epist = epist[_n+1] if epist[_n+1] < epist \& A[_n+1]==1
+bysort eid (epist epien sepmode) : replace sepmode = sepmode[_n+1] if sepmode[_n+1]==1 \& epien[_n+1]
+>  > epien \& A[_n+1]==1
+bysort eid (epist epien sepmode) : replace sepmode = sepmode[_n+1] if sepmode[_n+1]==2 \& A[_n+1]==1
+bysort eid (epist epien sepmode) : replace epien = epien[_n+1] if epien[_n+1] > epien \& A[_n+1]==1
+drop if A == 1
+drop A
+{\rbr}
+*And that's it. 
+keep if MI == 1
+keep eid epist epien MI
+save AllMI, replace

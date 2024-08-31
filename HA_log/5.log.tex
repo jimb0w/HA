@@ -1,0 +1,74 @@
+. list, separator(0)
+{\smallskip}
+     {\TLC}\HLI{36}{\TRC}
+     {\VBAR} id     admdate     sepdate   diag1 {\VBAR}
+     {\LFTT}\HLI{36}{\RGTT}
+  1. {\VBAR}  1   01jan2020   01jan2020    I214 {\VBAR}
+  2. {\VBAR}  1   01jan2020   01jan2020    I214 {\VBAR}
+  3. {\VBAR}  1   01jan2020   01jan2020    E119 {\VBAR}
+     {\BLC}\HLI{36}{\BRC}
+{\smallskip}
+. gen MI = 1 if substr(diag1,1,3)=="I21"
+(1 missing value generated)
+{\smallskip}
+. gen DM2= 1 if substr(diag1,1,3)=="E11"
+(2 missing values generated)
+{\smallskip}
+. forval i = 1/4 {\lbr}
+  2. bysort id (admdate sepdate) : gen dup = 1 if admdate == admdate[_n-1] \& sepdate == sepdate[_n-1
+> ]
+  3. bysort id (admdate sepdate) : replace dup =. if dup[_n-1]==1
+  4. bysort id (admdate sepdate) : replace MI = 1 if MI[_n+1] == 1 \& dup[_n+1] == 1
+  5. bysort id (admdate sepdate) : replace DM2 = 1 if DM2[_n+1] == 1 \& dup[_n+1] == 1
+  6. list, separator(0)
+  7. drop if dup == 1
+  8. drop dup
+  9. {\rbr}
+(1 missing value generated)
+(1 real change made, 1 to missing)
+(0 real changes made)
+(0 real changes made)
+{\smallskip}
+     {\TLC}\HLI{53}{\TRC}
+     {\VBAR} id     admdate     sepdate   diag1   MI   DM2   dup {\VBAR}
+     {\LFTT}\HLI{53}{\RGTT}
+  1. {\VBAR}  1   01jan2020   01jan2020    I214    1     .     . {\VBAR}
+  2. {\VBAR}  1   01jan2020   01jan2020    I214    1     .     1 {\VBAR}
+  3. {\VBAR}  1   01jan2020   01jan2020    E119    .     1     . {\VBAR}
+     {\BLC}\HLI{53}{\BRC}
+(1 observation deleted)
+(1 missing value generated)
+(0 real changes made)
+(0 real changes made)
+(1 real change made)
+{\smallskip}
+     {\TLC}\HLI{53}{\TRC}
+     {\VBAR} id     admdate     sepdate   diag1   MI   DM2   dup {\VBAR}
+     {\LFTT}\HLI{53}{\RGTT}
+  1. {\VBAR}  1   01jan2020   01jan2020    I214    1     1     . {\VBAR}
+  2. {\VBAR}  1   01jan2020   01jan2020    E119    .     1     1 {\VBAR}
+     {\BLC}\HLI{53}{\BRC}
+(1 observation deleted)
+(1 missing value generated)
+(0 real changes made)
+(0 real changes made)
+(0 real changes made)
+{\smallskip}
+     {\TLC}\HLI{53}{\TRC}
+     {\VBAR} id     admdate     sepdate   diag1   MI   DM2   dup {\VBAR}
+     {\LFTT}\HLI{53}{\RGTT}
+  1. {\VBAR}  1   01jan2020   01jan2020    I214    1     1     . {\VBAR}
+     {\BLC}\HLI{53}{\BRC}
+(0 observations deleted)
+(1 missing value generated)
+(0 real changes made)
+(0 real changes made)
+(0 real changes made)
+{\smallskip}
+     {\TLC}\HLI{53}{\TRC}
+     {\VBAR} id     admdate     sepdate   diag1   MI   DM2   dup {\VBAR}
+     {\LFTT}\HLI{53}{\RGTT}
+  1. {\VBAR}  1   01jan2020   01jan2020    I214    1     1     . {\VBAR}
+     {\BLC}\HLI{53}{\BRC}
+(0 observations deleted)
+{\smallskip}

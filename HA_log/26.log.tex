@@ -1,0 +1,34 @@
+. foreach oc in LC HF ST PN AK HI {\lbr}
+  2. di "`oc'"
+  3. use hesin`oc', clear
+  4. count if OC == 1
+  5. local A = r(N)
+  6. use All`oc', clear
+  7. count if OC == 1
+  8. di round(100-100*r(N)/`A',1)
+  9. {\rbr}
+LC
+  29,274
+  26,389
+10
+HF
+  16,486
+  9,509
+42
+ST
+  30,569
+  16,233
+47
+PN
+  21,029
+  12,334
+41
+AK
+  9,866
+  5,773
+41
+HI
+  21,957
+  17,736
+19
+{\smallskip}

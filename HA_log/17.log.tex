@@ -1,0 +1,22 @@
+*Drop same day admissions, but keep the information they contain
+forval i = 1/5 {\lbr}
+bysort eid (epist epien sepmode) : gen A = 1 if epist == epist[_n-1] \& epien == epien[_n-1]
+bysort eid (epist epien sepmode) : replace A =. if A[_n-1]==1
+bysort eid (epist epien sepmode) : replace MI = 1 if MI[_n+1]==1 \& A[_n+1]==1
+bysort eid (epist epien sepmode) : replace sepmode = sepmode[_n+1] if sepmode[_n+1]!=0 \& A[_n+1]==1
+drop if A == 1
+drop A
+{\rbr}
+*Drop nested admissions, but keep the information they contain.
+forval i = 1/100 {\lbr}
+bysort eid (epist epien sepmode) : gen A = 1 if epist < epien[_n-1] \& epien[_n-1]!=.
+bysort eid (epist epien sepmode) : replace A =. if A[_n-1]==1
+bysort eid (epist epien sepmode) : replace MI = 1 if MI[_n+1]==1 \& A[_n+1]==1
+bysort eid (epist epien sepmode) : replace epist = epist[_n+1] if epist[_n+1] < epist \& A[_n+1]==1
+bysort eid (epist epien sepmode) : replace sepmode = sepmode[_n+1] if sepmode[_n+1]==1 \& epien[_n+1]
+>  > epien \& A[_n+1]==1
+bysort eid (epist epien sepmode) : replace sepmode = sepmode[_n+1] if sepmode[_n+1]==2 \& A[_n+1]==1
+bysort eid (epist epien sepmode) : replace epien = epien[_n+1] if epien[_n+1] > epien \& A[_n+1]==1
+drop if A == 1
+drop A
+{\rbr}

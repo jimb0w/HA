@@ -1,0 +1,55 @@
+. list in 1/10, separator(0)
+{\smallskip}
+     {\TLC}\HLI{80}{\TRC}
+     {\VBAR} diag1   diag2   diag3   diag4   diag5   diag6   diag7   diag8   diag9   diag10 {\VBAR}
+     {\LFTT}\HLI{80}{\RGTT}
+  1. {\VBAR}  F609    O466    S516    V186    J121    G993    F631    L768    Y330     R266 {\VBAR}
+  2. {\VBAR}  W790    O263    R353    F456    R119    F380    F081    K963    Z584     H879 {\VBAR}
+  3. {\VBAR}  A433    S762    C249    O166    U852    N334    P040    R127    W641     V687 {\VBAR}
+  4. {\VBAR}  H678    P884    I903    B003    H713    V166    L178    M872    H091     T575 {\VBAR}
+  5. {\VBAR}  Y334    Z135    L002    K111    I956    U035    H706    W761    D399     U715 {\VBAR}
+  6. {\VBAR}  N574    C216    M566    Q240    S958    W024    B033    A222    C830     S202 {\VBAR}
+  7. {\VBAR}  J413    U880    B076    K921    E117    P650    V910    M413    D493     N804 {\VBAR}
+  8. {\VBAR}  J280    H261    W341    E273    Z854    W896    F527    O826    B651     A676 {\VBAR}
+  9. {\VBAR}  Z774    C835    P681    M020    U289    S419    Y873    R719    Y319     Q046 {\VBAR}
+ 10. {\VBAR}  R536    M761    K485    U037    Q858    D389    K805    Y912    A562     N392 {\VBAR}
+     {\BLC}\HLI{80}{\BRC}
+{\smallskip}
+. *Our dataset is again just randomly generated ICD-10 codes
+. gen DM = .
+(1,000 missing values generated)
+{\smallskip}
+. forval i = 1/10 {\lbr}
+  2. replace DM = 1 if inrange(diag`i',"E10","E149")
+  3. {\rbr}
+(0 real changes made)
+(0 real changes made)
+(3 real changes made)
+(2 real changes made)
+(2 real changes made)
+(1 real change made)
+(0 real changes made)
+(1 real change made)
+(1 real change made)
+(3 real changes made)
+{\smallskip}
+. sort DM
+{\smallskip}
+. list in 9/18, separator(0)
+{\smallskip}
+     {\TLC}\HLI{85}{\TRC}
+     {\VBAR} diag1   diag2   diag3   diag4   diag5   diag6   diag7   diag8   diag9   diag10   DM {\VBAR}
+     {\LFTT}\HLI{85}{\RGTT}
+  9. {\VBAR}  W548    P770    K929    E103    Z747    G805    O239    P708    U992     W840    1 {\VBAR}
+ 10. {\VBAR}  T665    T808    X324    F195    G406    S408    Y035    C789    M234     E111    1 {\VBAR}
+ 11. {\VBAR}  Z023    M763    C719    Z586    Z946    E107    S720    E795    O731     L929    1 {\VBAR}
+ 12. {\VBAR}  B922    H270    V100    E429    U080    M165    H857    E149    N933     V289    1 {\VBAR}
+ 13. {\VBAR}  I130    U544    E110    Q410    H625    P330    Z654    M966    F785     L129    1 {\VBAR}
+ 14. {\VBAR}  Z346    F634    L383    N076    B105    C948    N959    B425    R439     X629    . {\VBAR}
+ 15. {\VBAR}  L429    M158    N842    Z948    I649    Z209    R681    Z279    B217     G020    . {\VBAR}
+ 16. {\VBAR}  Y962    M138    Q862    T103    Q501    C610    X855    Z461    L755     Q965    . {\VBAR}
+ 17. {\VBAR}  L060    W877    I889    Y908    B069    Y979    L947    B782    Z722     Z956    . {\VBAR}
+ 18. {\VBAR}  W995    M516    S830    T076    V134    V303    X293    Q444    T960     C155    . {\VBAR}
+     {\BLC}\HLI{85}{\BRC}
+{\smallskip}
+. *We successfully tag all admissions with a diagnosis of diabetes at any position
