@@ -1893,6 +1893,8 @@ erase HA.aux
 erase HA.log
 erase HA.out
 erase HA.toc
+erase HA.bbl
+erase HA.blg
 
 erase HA_TF.aux
 erase HA_TF.log
@@ -1902,7 +1904,7 @@ erase HA_TF.tex
 
 
 ! git init .
-! git add HA.do HA.tex HA.pdf HA_log HA_TF.pdf
+! git add HA.do HA.pdf HA_TF.pdf
 ! git commit -m "0"
 ! git remote remove origin
 ! git remote add origin https://github.com/jimb0w/HA.git
