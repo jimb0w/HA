@@ -1889,6 +1889,18 @@ cd "/home/jimb0w/Documents/HA"
 ! pdflatex HA_TF
 
 
+erase HA.aux
+erase HA.log
+erase HA.out
+erase HA.toc
+
+erase HA_TF.aux
+erase HA_TF.log
+erase HA_TF.out
+erase HA_TF.tex
+
+
+
 ! git init .
 ! git add HA.do HA.tex HA.pdf HA_log HA_TF.pdf
 ! git commit -m "0"
