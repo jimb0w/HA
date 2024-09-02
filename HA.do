@@ -164,8 +164,12 @@ ever earlier than admission date?). Second, watch everything you do across
 multiple examples, it is labourious, but worth it -- slow is smooth and smooth is fast
 (i.e., it's much quicker to get it right the first time and then move on 
 than to have to keep coming back to code you wrote a while ago every time you notice a 
-new mistake/problem further along in the analysis). Third,
-do not waste time perfecting code for 0.001\% of the dataset. The processes
+new mistake/problem further along in the analysis). 
+Similarly, tabulate key variables as you go to make sure
+you haven't made unexpected errors, such as erroneously deleting or observations/data,
+recoded variables incorrectly, made typos and used the wrong function (e.g., \emph{gen}
+instead of \emph{egen}).
+Third, do not waste time perfecting code for 0.001\% of the dataset. The processes
 and steps we outline below will work for most cases. We are also sure that these steps will miss things, 
 but we are fairly confident those will be irrelevant -- usually you will be working with samples
 that have at least 10,000 people in them, so having a handful of admissions coded incorrectly should
