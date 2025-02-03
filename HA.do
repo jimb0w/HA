@@ -566,7 +566,7 @@ And now we have two fully-processed episodes of care.
 
 \clearpage
 \subsection{Summary}
-A summary of the key data processing steps is shown below.
+A summary of the key data processing steps is shown below. \\
 
 1. Data harmonisation and checks \\
 \color{white} AAAAAAA \color{black} $\downarrow$ \\
