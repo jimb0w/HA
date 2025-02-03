@@ -565,16 +565,17 @@ texdoc stlog close
 And now we have two fully-processed episodes of care. 
 
 \clearpage
+\subsection{Summary}
 A summary of the key data processing steps is shown below.
 
 1. Data harmonisation and checks \\
-\color{white} AAAAAAA \color{black} $\downarrow$
+\color{white} AAAAAAA \color{black} $\downarrow$ \\
 2. Define an event of interest \\
-\color{white} AAAAAAA \color{black} $\downarrow$
+\color{white} AAAAAAA \color{black} $\downarrow$ \\
 3. Identify and remove duplicate admissions \\
-\color{white} AAAAAAA \color{black} $\downarrow$
+\color{white} AAAAAAA \color{black} $\downarrow$ \\
 4. Identify and remove nested admissions \\
-\color{white} AAAAAAA \color{black} $\downarrow$
+\color{white} AAAAAAA \color{black} $\downarrow$ \\
 5. Identify and remove transfers \\
 
 
