@@ -1369,7 +1369,6 @@ when the admission date for the next record is
 before the separation date of the current record (rows 2-5). 
 C -- transfers. These reflect changing types of care in hospital, but can
 have errors that make them difficult to process. 
-(Refer to Figure 1 for a description of the dataset structure).
 
 
 ***/
@@ -1452,11 +1451,10 @@ texdoc stlog close
 \clearpage
 \noindent
 \textbf{Figure 3: Processing duplicate admissions.}
-Rows 1-3 have the same admission and separation dates, but different
-other information. The syntax processes them into a single row, 
+Rows 1-3 have the same admission and separation dates, but differ in other variables. 
+The syntax processes them into a single row, 
 but keep the relevant information -- here that is occurence of a myocardial infarction (MI)
 and diabetes status of the individual. 
-(Refer to Figure 1 for a description of the dataset structure).
 
 ***/
 
@@ -1567,13 +1565,12 @@ texdoc stlog close
 \clearpage
 \noindent 
 \textbf{Figure 4: Processing nested admissions.}
-The figure shows one episode of care across 5 admissions between 1/1/2020 and 12/1/2020. 
+The data shows one episode of care across 5 admissions between 1/1/2020 and 12/1/2020. 
 The first admission lasts from 1/1/2020 until 8/1/2020, 
 and the next four admissions have admission dates prior to 8/1/2020. 
-The syntax then reduces these admissions into a single row 
+The syntax reduces these admissions into a single row 
 while keeping the information relevant to the study -- 
 myocardial infarction (MI), diabetes status (DM), and arrhythmia (AR). 
-(Refer to Figure 1 for a description of the dataset structure).
 
 ***/
 
@@ -1673,7 +1670,6 @@ texdoc stlog close
 \color{white} AAAAAAA
 \color{black}
 $\downarrow$ Repeat
-\clearpage
 
 ***/
 
@@ -1763,9 +1759,11 @@ texdoc stlog close
 
 \clearpage
 \textbf{Figure 5: Processing transfers.}
-This is an episode of care lasting from 
+\noindent
+The data shows an episode of care lasting from 
 1/1/2020 to 15/1/2020, with 6 admissions. 
-The syntax collects relevant information from transfers
+The syntax collects relevant information from transfers (occurrence of 
+a myocardial infarction and admission and separation dates)
 while consolidating the information into a single row in the dataset. 
 
 ***/
