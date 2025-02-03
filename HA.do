@@ -1236,7 +1236,16 @@ keep eid epist epien OC
 save All`oc', replace
 }
 texdoc stlog close
+
+
 texdoc stlog
+use hesinmi, clear
+count if MI == 1
+local A = r(N)
+use AllMI, clear
+count if MI == 1
+di round(100-100*r(N)/`A',1)
+mat A = (0`A',r(N),round(100-100*r(N)/`A',0.1))
 foreach oc in LC HF ST PN AK HI {
 di "`oc'"
 use hesin`oc', clear
@@ -1245,13 +1254,57 @@ local A = r(N)
 use All`oc', clear
 count if OC == 1
 di round(100-100*r(N)/`A',1)
+mat A = (A\0`A',r(N),round(100-100*r(N)/`A',0.1))
 }
+clear
+svmat A
+tostring A1 A2, replace force format(%9.0fc)
+tostring A3, replace force format(%9.1f)
+replace A3 = A3 + "\%"
+gen A = ""
+replace A = "Myocardial infarction" if _n == 1
+replace A = "Lung cancer" if _n == 2
+replace A = "Heart failure" if _n == 3
+replace A = "Stroke" if _n == 4
+replace A = "Pneuomnia cancer" if _n == 5
+replace A = "Acute kidney injury" if _n == 6
+replace A = "head injury" if _n == 7
+order A
+export delimited using sumtabhesin.csv, delimiter(":") novarnames replace
 texdoc stlog close
 
 /***
 \color{black}
 
 In summary, process your data. 
+
+
+
+\begin{table}[h!]
+  \begin{center}
+    \caption{Results of data processing. Data show the number of admissions present in the dataset
+before data processing, the number of ``events'' that result from propessing, and the percentage
+difference.}
+    \hspace*{-3cm}
+    \label{propcitab}
+      \fontsize{5pt}{7pt}\selectfont\pgfplotstabletypeset[
+      multicolumn names,
+      col sep=colon,
+      header=false,
+      string type,
+      display columns/0/.style={column name=Outcome, column type={l}},
+      display columns/1/.style={column name=Unprocessed count, column type={r}},
+      display columns/2/.style={column name=Processed count, column type={r}},
+      display columns/3/.style={column name=Percent reduction, column type={r}},
+      every head row/.style={
+        before row={\toprule
+					},
+        after row={\midrule}
+            },
+        every last row/.style={after row=\bottomrule},
+    ]{sumtabhesin.csv}
+  \end{center}
+\end{table}
 
 \end{document}
 ***/
@@ -1286,7 +1339,7 @@ set linesize 100
 \usepackage{pgfplotstable}
 
 \begin{document}
-\tiny
+
 \noindent
 \textbf{Figure 1: Example admitted episodes data structure.}
 Admissions data usually has 
@@ -1922,6 +1975,35 @@ texdoc stlog close
 /***
 
 For \emph{admmode} and \emph{sepmode}, H=Home and T=Transfer.
+
+\clearpage
+
+
+\begin{table}[h!]
+  \begin{center}
+    \caption{Results of data processing. Data show the number of admissions present in the dataset
+before data processing, the number of ``events'' that result from propessing, and the percentage
+difference.}
+    \hspace*{-3cm}
+    \label{propcitab}
+      \fontsize{5pt}{7pt}\selectfont\pgfplotstabletypeset[
+      multicolumn names,
+      col sep=colon,
+      header=false,
+      string type,
+      display columns/0/.style={column name=Outcome, column type={l}},
+      display columns/1/.style={column name=Unprocessed count, column type={r}},
+      display columns/2/.style={column name=Processed count, column type={r}},
+      display columns/3/.style={column name=Percent reduction, column type={r}},
+      every head row/.style={
+        before row={\toprule
+					},
+        after row={\midrule}
+            },
+        every last row/.style={after row=\bottomrule},
+    ]{sumtabhesin.csv}
+  \end{center}
+\end{table}
 
 \end{document}
 ***/
