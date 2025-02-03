@@ -1287,7 +1287,7 @@ before data processing, the number of ``events'' that result from propessing, an
 difference.}
     \hspace*{-3cm}
     \label{propcitab}
-      \fontsize{5pt}{7pt}\selectfont\pgfplotstabletypeset[
+      \pgfplotstabletypeset[
       multicolumn names,
       col sep=colon,
       header=false,
@@ -1984,9 +1984,8 @@ For \emph{admmode} and \emph{sepmode}, H=Home and T=Transfer.
     \caption{Results of data processing. Data show the number of admissions present in the dataset
 before data processing, the number of ``events'' that result from propessing, and the percentage
 difference.}
-    \hspace*{-3cm}
     \label{propcitab}
-      \fontsize{5pt}{7pt}\selectfont\pgfplotstabletypeset[
+      \pgfplotstabletypeset[
       multicolumn names,
       col sep=colon,
       header=false,
