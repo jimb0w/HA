@@ -1286,7 +1286,7 @@ set linesize 100
 \usepackage{pgfplotstable}
 
 \begin{document}
-
+\tiny
 \noindent
 \textbf{Figure 1: Example admitted episodes data structure.}
 Admissions data usually has 
