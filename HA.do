@@ -1,4 +1,4 @@
-
+/*
 texdoc init HA, replace logdir(HA_log) gropts(optargs(width=0.8\textwidth))
 set linesize 100
 
@@ -1258,6 +1258,8 @@ In summary, process your data.
 
 texdoc close
 
+*/
+
 texdoc init HA_TF, replace logdir(HATF_log) gropts(optargs(width=0.8\textwidth))
 set linesize 100
 
@@ -1561,9 +1563,12 @@ texdoc stlog close
 
 \clearpage
 \textbf{Figure 4: Processing nested admissions.}
-
-Based on the admission and separation dates, the example in Figure 4 illustrates one episode of care across 5 admissions, between 1/1/2020 and 12/1/2020. The first admission lasts from 1/1/2020 until 8/1/2020, and the next four admissions have admission dates prior to 8/1/2020, all containing relevant information about the admission that may contain information relevant to the study. Again, the goal is to reduce these admissions into a single row (containing the event) but keep the relevant information (in this example it is myocardial infarction, diabetes status, and arrhythmia). 
-
+The figure shows one episode of care across 5 admissions between 1/1/2020 and 12/1/2020. 
+The first admission lasts from 1/1/2020 until 8/1/2020, 
+and the next four admissions have admission dates prior to 8/1/2020. 
+The syntax then reduces these admissions into a single row 
+while keeping the information relevant to the study -- 
+myocardial infarction (MI), diabetes status (DM), and arrhythmia (AR). 
 (Refer to Figure 1 for a description of the dataset structure).
 
 ***/
@@ -1753,7 +1758,11 @@ texdoc stlog close
 /***
 
 \clearpage
-Figure 5: Processing transfers.
+\textbf{Figure 5: Processing transfers.}
+This is an episode of care lasting from 
+1/1/2020 to 15/1/2020, with 6 admissions. 
+The syntax collects relevant information from transfers
+while consolidating the information into a single row in the dataset. 
 
 ***/
 
