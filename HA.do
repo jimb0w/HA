@@ -568,6 +568,7 @@ And now we have two fully-processed episodes of care.
 \subsection{Summary}
 A summary of the key data processing steps is shown below. \\
 
+\noindent
 1. Data harmonisation and checks \\
 \color{white} AAAAAAA \color{black} $\downarrow$ \\
 2. Define an event of interest \\
@@ -1284,7 +1285,13 @@ set linesize 100
 
 \begin{document}
 
-Figure 1: Example admitted episodes data structure.
+\textbf{Figure 1: Example admitted episodes data structure.}
+the data usually has the following elements: 
+it has multiple records for each individual in the dataset, each corresponding to some type of care;
+each row will have dates indicating the start and end dates of the record, 
+the principal diagnosis and secondary diagnoses associated with the record, 
+the procedures associated with the record,
+information on the admission source and separation destination. 
 
 ***/
 
@@ -1348,7 +1355,18 @@ texdoc stlog close
 
 \clearpage
 
-Figure 2: Common aspects of hospital admissions data requiring processing when defining episodes of care.
+\textbf{Figure 2: Common aspects of hospital admissions data requiring processing when defining episodes of care.}
+A -- duplicate observations. Admissions that are 
+duplicate only in the sense they have the same admission and 
+separation date but differ in the other data present. 
+B -- nested admissions. 
+"Nested" admissions are defined as 
+when the admission date for the next record is 
+before the separation date of the current record (rows 2-5). 
+C -- transfers. These reflected changing types of care in hospital, but can
+have errors that make them difficult to process. 
+(Refer to Figure 1 for a description of the dataset structure).
+
 
 ***/
 
@@ -1428,7 +1446,12 @@ texdoc stlog close
 /***
 
 \clearpage
-Figure 3: Processing duplicate admissions.
+\textbf{Figure 3: Processing duplicate admissions.}
+The goal is to collapse these admissions into a single record, 
+but keep the information contained in all of them. Here,
+the information we are interested in is occurence of MI
+and diabetes status. 
+(Refer to Figure 1 for a description of the dataset structure).
 
 ***/
 
@@ -1537,7 +1560,11 @@ texdoc stlog close
 /***
 
 \clearpage
-Figure 4: Processing nested admissions.
+\textbf{Figure 4: Processing nested admissions.}
+
+Based on the admission and separation dates, the example in Figure 4 illustrates one episode of care across 5 admissions, between 1/1/2020 and 12/1/2020. The first admission lasts from 1/1/2020 until 8/1/2020, and the next four admissions have admission dates prior to 8/1/2020, all containing relevant information about the admission that may contain information relevant to the study. Again, the goal is to reduce these admissions into a single row (containing the event) but keep the relevant information (in this example it is myocardial infarction, diabetes status, and arrhythmia). 
+
+(Refer to Figure 1 for a description of the dataset structure).
 
 ***/
 
